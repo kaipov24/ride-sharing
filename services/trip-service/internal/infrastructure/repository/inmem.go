@@ -3,8 +3,6 @@ package repository
 import (
 	"context"
 	"ride-sharing/services/trip-service/internal/domain"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type inmemRepository struct {
@@ -19,11 +17,7 @@ func NewInMemRepository() *inmemRepository {
 	}
 }
 
-func (r *inmemRepository) CreateTrip(ctx context.Context, trip domain.TripModel) (*domain.TripModel, error) {
-	if trip.ID.IsZero() {
-		trip.ID = primitive.NewObjectID()
-	}
-
-	r.trips[trip.ID.Hex()] = &trip
-	return &trip, nil
+func (r *inmemRepository) CreateTrip(ctx context.Context, trip *domain.TripModel) (*domain.TripModel, error) {
+	r.trips[trip.ID.Hex()] = trip
+	return trip, nil
 }
